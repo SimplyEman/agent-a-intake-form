@@ -1,0 +1,23 @@
+change_codes:
+- code: A.1
+  description: Change in name and/or address of the MAH
+- code: A.2.a
+  description: Change in name of the medicinal product
+- code: A.2.b
+  description: Change in name of the medicinal product in one Member State
+- code: B.I.a.1.c
+  description: Update of CEP with no impact
+- code: B.I.a.1.d
+  description: Update of CEP with impact
+- code: B.I.a.2
+  description: New CEP version with re-assessment
+- code: B.I.b.1.a
+  description: Minor change to active substance specs
+- code: B.I.b.1.d
+  description: Deletion of non-significant spec parameter
+- code: C.I.4
+  description: Major SmPC change requiring assessment
+- code: C.III.1
+  description: Other post-authorisation changes
+- code: B.II.e.5
+  description: Addition of new pack size
