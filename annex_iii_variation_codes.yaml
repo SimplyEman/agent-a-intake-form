@@ -1,0 +1,23 @@
+change_codes:
+- code: A.1
+  description: Change in name and/or address of the MAH
+- code: A.2.a
+  description: Change in the name of the medicinal product
+- code: A.2.b
+  description: Change in the product name in one member state
+- code: B.I.a
+  description: Change in the manufacturing process of the active substance
+- code: B.I.b.1.a
+  description: Minor change to specification parameter
+- code: B.I.b.1.d
+  description: Deletion of a non-significant specification parameter
+- code: B.II.e.5
+  description: Addition of a new pack size
+- code: C.I.3.a
+  description: Update of SmPC wording
+- code: C.I.4
+  description: Major SmPC change requiring assessment
+- code: C.II.6
+  description: Submission of new clinical data
+- code: C.III.1
+  description: Other post-authorisation changes
