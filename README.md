@@ -1,12 +1,12 @@
-# Agent A – Intake Form (Dynamic Codes + Light/Dark Mode)
+# Agent A – Variation Intake Form
 
-This version includes:
-- All variation change codes (Annex III)
-- YAML-based dynamic code lookup
-- SPC sections 1–10
-- Light/dark mode toggle in sidebar
+Includes:
+- Full MHRA Annex III variation codes (via YAML)
+- SPC Sections 1–10
+- Light/dark mode
+- Dynamic form with invoice + summary + code list
 
-## Run Locally
+## Run
 
 ```bash
 pip install -r requirements.txt

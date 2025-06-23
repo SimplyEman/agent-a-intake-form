@@ -5,12 +5,10 @@ import json
 import datetime
 import os
 
-# Light/Dark mode toggle
 theme_mode = st.sidebar.radio("Theme", ["🌞 Light", "🌚 Dark"])
 if theme_mode == "🌚 Dark":
     st.markdown("<style>body { background-color: #111111; color: #ffffff; }</style>", unsafe_allow_html=True)
 
-# Load change codes from YAML
 with open("annex_iii_variation_codes.yaml", "r") as f:
     codes_data = yaml.safe_load(f)
     change_codes = codes_data["change_codes"]
@@ -21,7 +19,7 @@ spc_sections = [
     "1", "2", "3",
     "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9",
     "5.1", "5.2", "5.3",
-    "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
+    "6.1", "6.2", "6.3", "6.4", "6.5", "6.6",
     "7", "8", "9", "10"
 ]
 
@@ -31,15 +29,14 @@ st.set_page_config(page_title="Agent A – Intake Form", layout="centered")
 st.title("🧾 Agent A – Variation Submission Intake Form")
 
 with st.form("intake_form", clear_on_submit=False):
-
     st.subheader("1️⃣ Product Information")
     col1, col2 = st.columns(2)
     with col1:
         pl_number = st.selectbox("Select PL Number", list(pl_data.keys()), key="pl_number")
     with col2:
-        st.markdown("**Product Name**")
-        st.text(pl_data[st.session_state.pl_number])
-        product_name = pl_data[st.session_state.pl_number]
+        if "product_name" not in st.session_state or st.session_state.get("pl_number"):
+            st.session_state.product_name = pl_data[pl_number]
+        product_name = st.text_input("Product Name", value=st.session_state.product_name, key="product_name")
 
     variation_type = st.radio("Select Variation Type", ["Type IA", "Type IB", "Type II"], horizontal=True)
 
@@ -51,11 +48,10 @@ with st.form("intake_form", clear_on_submit=False):
     invoice_id = st.text_input("Invoice Tracking Number (optional)")
 
     st.markdown("---")
-    st.subheader("3️⃣ Upload Supporting Documents")
-    uploaded_other = st.file_uploader("Upload Optional Supporting Documents", type=["pdf", "doc"], accept_multiple_files=True)
+    st.subheader("3️⃣ Upload Optional Supporting Docs")
+    uploaded_other = st.file_uploader("Upload Other Documents", type=["pdf", "doc"], accept_multiple_files=True)
 
     submitted = st.form_submit_button("Submit Request")
-
     if submitted:
         data = {
             "PL Number": pl_number,
