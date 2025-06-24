@@ -1,17 +1,40 @@
 
 import streamlit as st
-import re
-from datetime import date
-from fpdf import FPDF
 import os
+import re
+from fpdf import FPDF
+from datetime import date
+from dotenv import load_dotenv
+import openai
 
-st.set_page_config(layout="wide", page_title="Agent A – Intake + Cover Letter Generator")
+st.set_page_config(layout="wide", page_title="Agent A – LLM Intake Assistant")
 
-st.title("📥 Agent A – MHRA Variation Intake Assistant")
+# Load OpenAI API key
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Email Upload
+st.title("📥 Agent A – Email to eCTD Intake + Cover Letter")
+
+# Upload section
 st.header("Step 1: Upload Email")
-email_file = st.file_uploader("Drop a .txt file with the variation request", type=["txt"])
+email_file = st.file_uploader("Drop a .txt version of the email", type=["txt"])
+
+def extract_summary_from_llm(email_text):
+    prompt = f"""Extract a formal regulatory scope statement from the email below, suitable for use in a cover letter to the MHRA. Focus only on the variation change being made, SPC sections involved, and reason for the change. Keep it brief, one paragraph.
+
+EMAIL:
+{email_text}
+"""
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.4,
+        )
+        return response.choices[0].message['content'].strip()
+    except Exception as e:
+        return f"[Error generating summary: {e}]"
 
 def parse_email(text):
     result = {
@@ -43,10 +66,7 @@ def parse_email(text):
         sections = re.findall(r"[\d.]+", spc_matches[0])
         result["SPC Sections"] = sections
 
-    # Smart summary for cover letter
-    summary_sentences = [s.strip() for s in text.split(".") if "variation" in s.lower() or "change" in s.lower()]
-    result["Summary"] = summary_sentences[0] if summary_sentences else "To register a variation as described."
-
+    result["Summary"] = extract_summary_from_llm(text)
     return result
 
 parsed_data = {}
@@ -58,13 +78,12 @@ if email_file:
     st.success("Parsed successfully.")
     st.write(parsed_data)
 
-    # Form Fields
     st.header("Step 2: Confirm/Adjust Intake Info")
     pl_number = st.text_input("PL Number", value=parsed_data.get("PL Number", ""))
     variation_type = st.text_input("Variation Type", value=parsed_data.get("Variation Type", ""))
-    change_codes = st.text_input("Change Codes (comma separated)", value=", ".join(parsed_data.get("Change Codes", [])))
-    spc_sections = st.text_input("SPC Sections (comma separated)", value=", ".join(parsed_data.get("SPC Sections", [])))
-    summary_scope = st.text_area("Summary / Scope", value=parsed_data.get("Summary", ""), height=100)
+    change_codes = st.text_input("Change Codes", value=", ".join(parsed_data.get("Change Codes", [])))
+    spc_sections = st.text_input("SPC Sections", value=", ".join(parsed_data.get("SPC Sections", [])))
+    summary_scope = st.text_area("Summary / Scope", value=parsed_data.get("Summary", ""), height=120)
 
     st.header("Step 3: Generate Cover Letter")
     today = date.today().strftime("%d %B %Y")
