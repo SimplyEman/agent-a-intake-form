@@ -1,12 +1,12 @@
-# Agent A – Learning Intake Form (Reactive)
+# Agent A – Reactive Intake Form with Theme Toggle
 
-Adds:
-- Fully reactive product name auto-fill
-- Remembers custom variation change codes
-- Clean UI with SPC sections 1–10
-- Light/dark toggle
+Includes:
+- Reactive product name auto-fill
+- Manual + memory-based change codes
+- SPC sections 1–10
+- Light/dark theme toggle
 
-## Run Locally
+## To Run
 
 ```bash
 pip install -r requirements.txt

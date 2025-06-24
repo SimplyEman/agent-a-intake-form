@@ -30,26 +30,32 @@ spc_sections = [
 
 pl_data = {f"PL 10000/{i:04}": f"Product {i}" for i in range(1, 101)}
 
-st.set_page_config(page_title="Agent A – Learning Intake Form (Reactive)", layout="centered")
+st.set_page_config(page_title="Agent A – Reactive Intake", layout="centered")
 st.title("🧾 Agent A – Variation Submission Intake Form")
 
 with st.sidebar:
-    theme_mode = st.radio("Theme", ["🌞 Light", "🌚 Dark"])
-    if theme_mode == "🌚 Dark":
-        st.markdown("<style>body { background-color: #111111; color: #ffffff; }</style>", unsafe_allow_html=True)
+    theme_mode = st.radio("Theme", ["🌞 Light Mode", "🌚 Dark Mode"])
+    if theme_mode == "🌚 Dark Mode":
+        st.markdown("""
+        <style>
+        .main, .css-18e3th9, .block-container {
+            background-color: #1e1e1e;
+            color: white;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
+# OUTSIDE form block – reactive product name logic
+pl_number = st.selectbox("Select PL Number", list(pl_data.keys()), key="pl_number")
+if "product_name" not in st.session_state:
+    st.session_state.product_name = pl_data.get(pl_number, "")
+if pl_number != st.session_state.get("last_pl", ""):
+    st.session_state.product_name = pl_data.get(pl_number, "")
+    st.session_state.last_pl = pl_number
+product_name = st.text_input("Product Name", key="product_name")
+
+# Main form
 with st.form("intake_form", clear_on_submit=False):
-
-    st.subheader("1️⃣ Product Information")
-    col1, col2 = st.columns(2)
-    with col1:
-        pl_number = st.selectbox("Select PL Number", list(pl_data.keys()), key="pl_number")
-    with col2:
-        if "product_name" not in st.session_state or st.session_state.pl_number != st.session_state.get("last_pl"):
-            st.session_state.product_name = pl_data.get(pl_number, "")
-            st.session_state.last_pl = pl_number
-        product_name = st.text_input("Product Name", key="product_name")
-
     variation_type = st.radio("Select Variation Type", ["Type IA", "Type IB", "Type II"], horizontal=True)
 
     st.markdown("---")
@@ -75,7 +81,7 @@ with st.form("intake_form", clear_on_submit=False):
     if submitted:
         data = {
             "PL Number": pl_number,
-            "Product Name": product_name,
+            "Product Name": st.session_state.product_name,
             "Variation Type": variation_type,
             "Change Codes": selected_codes,
             "SPC Sections": selected_spc_sections,
