@@ -1,23 +1,37 @@
+
 import streamlit as st
-import os
 from fpdf import FPDF
 
-def stage2_generate_files():
-    st.header("📁 Step 2: Generate eCTD Folder + Files")
+def stage2_generate_cover():
+    st.header("📄 Step 3: Cover Letter Generator")
 
-    product = st.text_input("Product Name", "Product X")
-    change_summary = st.text_area("Change Summary", "To register...")
+    if "scope_summary" not in st.session_state:
+        st.warning("Please complete the intake form first.")
+        return
 
-    if st.button("Generate Cover Letter PDF"):
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        pdf.multi_cell(0, 10, f"To: MHRA
+    cover_pdf = FPDF()
+    cover_pdf.add_page()
+    cover_pdf.set_font("Arial", size=12)
 
-Subject: {change_summary}
+    lines = [
+        "To: MHRA",
+        "Subject: Variation Submission",
+        "",
+        "Dear Sir/Madam,",
+        "",
+        st.session_state["scope_summary"],
+        "",
+        "Please find the attached eCTD submission package.",
+        "",
+        "Kind regards,",
+        "Regulatory Affairs Officer"
+    ]
 
-Regards,
-RA Officer")
-        os.makedirs("output", exist_ok=True)
-        pdf.output("output/cover_letter.pdf")
-        st.success("PDF cover letter generated in 'output/cover_letter.pdf'")
+    for line in lines:
+        cover_pdf.multi_cell(0, 10, line)
+
+    pdf_path = "/mnt/data/cover_letter.pdf"
+    cover_pdf.output(pdf_path)
+    st.success("Cover letter generated.")
+    with open(pdf_path, "rb") as file:
+        st.download_button("📄 Download Cover Letter PDF", file, file_name="cover_letter.pdf")
