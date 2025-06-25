@@ -26,8 +26,8 @@ def load_msg_as_text(msg_file):
     attachments = msg.attachments
     return msg_message, attachments
 
-def get_product_name(pl_number):
-    return PRODUCT_MAP.get(pl_number, "")
+def get_product_name(pl_number: str) -> str:
+    return PRODUCT_MAP.get(pl_number.strip(), "")
 
-def get_fee_type(change_code):
-    return FEE_TYPE_MAP.get(change_code, "Unknown")
+def get_fee_type(change_code: str) -> str:
+    return FEE_TYPE_MAP.get(change_code.strip(), "Unknown")
