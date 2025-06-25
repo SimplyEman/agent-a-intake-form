@@ -13,11 +13,9 @@ def generate_cover_letter(scope_summary, output_path="cover_letter.pdf"):
 
     cover_pdf.set_font("Arial", size=12)
     cover_pdf.ln(10)
-    cover_pdf.multi_cell(0, 10, f"To: MHRA
-
-Submission Date: {datetime.today().strftime('%Y-%m-%d')}
-
-{scope_summary}")
+    message = f"To: MHRA\n\nSubmission Date: {datetime.today().strftime('%Y-%m-%d')}\n\n{scope_summary}"
+    for line in message.split("\n"):
+        cover_pdf.multi_cell(0, 10, line)
 
     cover_pdf.output(output_path)
     return output_path
