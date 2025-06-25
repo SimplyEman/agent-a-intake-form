@@ -1,6 +1,0 @@
-streamlit
-pandas
-fpdf2
-extract-msg
-openai
-python-dotenv
