@@ -1,2 +1,4 @@
 streamlit
 fpdf
+extract_msg
+PyYAML
