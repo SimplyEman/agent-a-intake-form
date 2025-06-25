@@ -1,0 +1,17 @@
+From: pharma.contact@example.com
+To: regulatory.team@yourcompany.com
+Subject: Urgent Variation Request for Product 'ReguloX' (PL 12345/0001)
+
+Hi Team,
+
+Following our discussion, please initiate a variation for our product ReguloX (PL 12345/0001).
+
+The change involves an update to the formulation of the finished product. Specifically, we are replacing an existing excipient. This falls under a minor change category.
+
+Please process this as a Type IB variation, specifically code IB-C.II.a. The affected SPC section is 6.1.
+
+Let me know if you need anything further.
+
+Best,
+John Doe
+Lead Pharmacist
