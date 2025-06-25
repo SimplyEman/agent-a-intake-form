@@ -1,8 +1,0 @@
-code,description,fee_gbp,type
-IA,Change in the name or address of the marketing authorisation holder,120,Admin
-IAIN,Introduction of a new pack size,120,Admin
-IB,Minor change to the manufacturing process,450,Minor
-II,Major change to the manufacturing process,900,Major
-TYPE-II-C.I.4,Change in the shape or dimensions of the tablet,900,Major
-IB-C.II.a,Change in the formulation of the finished product,450,Minor
-IA-A.1,Change of the name of the medicinal product,120,Admin
