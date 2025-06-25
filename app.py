@@ -28,7 +28,7 @@ EMAIL:
         f.write(prompt)
 
     st.write("Running offline model...")
-    output = subprocess.getoutput(f"./main -m {model_path} -p "{prompt}" -n 512")
+    output = subprocess.getoutput(f'./main -m {model_path} -p "{prompt}" -n 512')
 
     # Display summary
     st.subheader("🧾 Scope Summary Output")
