@@ -29,23 +29,27 @@ if st.button("✅ Submit and Generate Files"):
     cover_pdf = FPDF()
     cover_pdf.add_page()
     cover_pdf.set_font("Arial", size=12)
-    cover_pdf.multi_cell(0, 10, f"To: MHRA
+    cover_text = f"""To: MHRA
 
 Subject: Variation Submission
 
 Summary: {summary}
 
-Change Code: {change_code}")
+Change Code: {change_code}
+"""
+    cover_pdf.multi_cell(0, 10, cover_text)
     cover_pdf.output(os.path.join(base_path, "m1/m1.0/cover_letter.pdf"))
 
     # Save PDF: eAF
     eaf_pdf = FPDF()
     eaf_pdf.add_page()
     eaf_pdf.set_font("Arial", size=12)
-    eaf_pdf.multi_cell(0, 10, f"Product Name: {product_name}
+    eaf_text = f"""Product Name: {product_name}
 PL Number: {pl_number}
 Fee Type: {fee_type}
-Invoice: {invoice_number}")
+Invoice: {invoice_number}
+"""
+    eaf_pdf.multi_cell(0, 10, eaf_text)
     eaf_pdf.output(os.path.join(base_path, "m1/m1.2/eaf_form.pdf"))
 
     st.success("✅ Files generated in eCTD folder structure.")
