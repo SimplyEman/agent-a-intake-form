@@ -1,24 +1,32 @@
 
 import streamlit as st
-import os
-from pathlib import Path
 from email_parser import parse_email_scope
-from utils import load_pl_data, load_change_codes, autofill_product_info
-from cover_letter_generator import generate_cover_letter
+from utils import load_msg_as_text
+from stage1 import stage1_form
+from stage2 import stage2_output
 
-# Stage 0 – Email Intake
-st.title("Agent A – eCTD Submission Assistant")
+st.set_page_config(page_title="Agent A: SubmissionPrep", layout="centered")
 
-st.header("📩 Step 0 – Intake via Email")
-uploaded_email = st.file_uploader("Drag and drop email (.txt)", type=["txt"])
-parsed_scope = ""
+st.title("💊 Agent A: SubmissionPrep")
 
-if uploaded_email:
-    email_text = uploaded_email.read().decode("utf-8")
-    parsed_scope = parse_email_scope(email_text)
-    st.success("Scope extracted:")
-    st.markdown(f"> {parsed_scope}")
+step = st.sidebar.radio("Choose Step", ["0 - Intake via Email", "1 - Intake Form", "2 - Generate eCTD Docs"])
 
-# Continue to Stage 1 below (placeholder UI)
-st.header("📝 Step 1 – Intake Form")
-st.info("Stage 1 and 2 appear below in the original app sections...")
+if step == "0 - Intake via Email":
+    st.header("📩 Step 0: Drag-and-Drop Email")
+    uploaded_msg = st.file_uploader("Upload .msg Email File", type=["msg"])
+    if uploaded_msg:
+        msg_txt = load_msg_as_text(uploaded_msg)
+        st.markdown("### Email Content")
+        st.code(msg_txt)
+
+        if st.button("🧠 Generate Scope from Email"):
+            extracted = parse_email_scope(msg_txt)
+            st.session_state["email_scope"] = extracted
+            st.success("Scope generated.")
+            st.text_area("Scope Output", value=extracted, height=200)
+
+elif step == "1 - Intake Form":
+    stage1_form()
+
+elif step == "2 - Generate eCTD Docs":
+    stage2_output()
