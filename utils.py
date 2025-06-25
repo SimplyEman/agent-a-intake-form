@@ -1,4 +1,10 @@
 import os
+import extract_msg
+
+# Static map of PL numbers to product names
+PRODUCT_MAP = {
+    f"PL 1000/{1000+i}": f"Product {i+1}" for i in range(100)
+}
 
 def get_change_codes():
     base_path = os.path.dirname(__file__)
@@ -7,8 +13,10 @@ def get_change_codes():
         return [line.strip() for line in f if line.strip()]
 
 def load_msg_as_text(msg_file):
-    import extract_msg
     msg = extract_msg.Message(msg_file)
     msg_message = msg.body
     attachments = msg.attachments
     return msg_message, attachments
+
+def get_product_name(pl_number):
+    return PRODUCT_MAP.get(pl_number, "")
