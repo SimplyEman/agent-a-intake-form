@@ -1,16 +1,17 @@
-
 import streamlit as st
-from utils import get_product_name
+from stage0 import stage0_intro
+from stage1 import stage1_form
+from stage2 import stage2_generate_files
 
-def main():
-    st.title("Agent A - Intake Form")
+st.set_page_config(page_title="Agent A - eCTD Submission Helper", layout="wide")
 
-    pl_number = st.selectbox("Select PL Number", ["PL00001/0001", "PL00002/0002", "PL00003/0003"])
-    product_name = get_product_name(pl_number)
-    st.text_input("Product Name", value=product_name, disabled=True)
+stage = st.sidebar.radio("Choose Stage", ["Stage 0: Email Intake", "Stage 1: Intake Form", "Stage 2: Folder & File Prep"])
 
-    if st.button("Submit"):
-        st.success("Form submitted successfully!")
+if stage == "Stage 0: Email Intake":
+    stage0_intro()
 
-if __name__ == "__main__":
-    main()
+elif stage == "Stage 1: Intake Form":
+    stage1_form()
+
+elif stage == "Stage 2: Folder & File Prep":
+    stage2_generate_files()
